@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <title>Document</title>
+</head>
+<body>
+<form action="" method="post">
+{% csrf_token %}
+    <textarea id="check" name="check" rows="4" cols="50">
+      </textarea>
+      <div>
+      <input type="submit" value="Submit" class="btn-outline-danger">
+      </div>
+      <div>
+      <table class="table">
+    
+    <thead>
+    <tr>
+    <th>
+    Websites
+    </th>
+    <th>Similarity (%)</th>
+    </tr>
+</thead>
+    <tbody>
+    {% for i,k in newd.items %}
+    <tr>
+    <td><a href="{{i}}" target="_blank">{{i}}</a></td>
+    <td>{{k}}</td>
+
+    </tr>
+    {% endfor %}
+    
+    </tbody>
+    
+    </table>
+    
+      </div>
+      
+      </form> 
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script src="{% static 'js/popper.js'%}"></script>
+    <script src="{% static 'js/bootstrap.js'%}"></script>
+</body>
+</html>

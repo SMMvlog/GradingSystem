@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <title>Home</title>
+</head>
+<!-- <body style="background-color:#18524d;"> -->
+<body style="background-color:#e0eae7;">
+{% if messages %}
+{% for message in messages %}
+<script>
+alert('{{message}}');
+/* window.location = ('{% url 'home'%}');*/
+</script>
+{% endfor %}
+{% endif %}
+    <div class="container-fluid">
+    <div class="row">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow" style="background-color:#18524d;">
+    <span class="navbar-brand mx-5"><i class="fas fa-user-graduate"></i> GradingSystem</span>
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="ps-2 text-white"><a href="{% url 'plaigiarism' %}" class="nav-link"> Plaigiarism <a></li>
+</ul>
+    </nav>
+    </div>
+    <div class="row">
+    <div class="col-md-2">
+    <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mt-5 text-white">   
+    <label for="file" class="fw-bold">Upload File:</label>
+    <input type="file" style="display:none;" id="file" name="file">
+    <div class="files">
+    <button id="b2" name="b2" class="btn btn-outline-info" style="margin-right:16px;" onclick="document.getElementById('file').click();return false;" >B2</button>
+    <button id="c1" name="c1" class="btn btn-outline-info" style="margin-right:16px" onclick="document.getElementById('file').click();return false;" >C1</button>
+    <button id="c2" name="c2" class="btn btn-outline-info" onclick="document.getElementById('file').click();return false;" >C2</button>
+    </div>
+    </div>
+    <div class="mt-2">
+    <input type="submit" value="Submit" class="btn btn-outline-warning btncust" style="width:-webkit-fill-available;" >
+    </div>
+    </form>
+    </div>
+    {% if dict2 %}
+    <div class="col-md-5 mt-5 offset-2 text-center shadow p-5">
+    <table class="table table-bordered border-dark text-center" id="tblCustomers" style="color:#92e630;">
+    <tr>
+    <th colspan="10" class="thh">Candidate Name</th>
+    <th colspan="10" class="thh">Candidate Number</th>
+    </tr>
+    <tr>
+    <td colspan="10" class="tdd">{{dict2.Name}}</td>
+    <td colspan="10" class="tdd">{{dict2.Roll_No}}</td>
+    </tr>
+    <tr>
+    <th colspan="4" class="thh">Overall Impression</th>
+    <th colspan="4" class="thh">Task Fulfilment</th>
+    <th colspan="4" class="thh">Organisation And cohesion</th>
+    <th colspan="4" class="thh">Grammar And lexis</th>
+    <th colspan="4" class="thh">Total</th>
+    </tr>
+    <tr>
+    <td colspan="4" class="tdd">{{dict2.OverallImpression.0}}</td>
+    <td colspan="4" class="tdd">{{dict2.TaskFulfilment.0}}</td>
+    <td colspan="4" class="tdd">{{dict2.OrganisationAndCohesion.0}}</td>
+    <td colspan="4" class="tdd">{{dict2.GrammarAndLexis.0}}</td>
+    <td colspan="4" class="tdd">{{dict2.Predictions.0}}</td>
+    </tr>
+
+   <tr>
+    <td colspan="4" class="tdd">{{dict2.OverallImpression.1}}</td>
+    <td colspan="4" class="tdd">{{dict2.TaskFulfilment.1}}</td>
+    <td colspan="4" class="tdd">{{dict2.OrganisationAndCohesion.1}}</td>
+    <td colspan="4" class="tdd">{{dict2.GrammarAndLexis.1}}</td>
+    <td colspan="4" class="tdd">{{dict2.Predictions.1}}</td>
+    </tr>
+    <tr>
+    <th colspan="10" class="thh"> GRADE </th>
+    <th colspan="10" class="thh"> REMARK </th>
+    </tr>
+    <tr>
+    <td colspan="10" class="tdd">{{dict2.result}}</td>
+    <td colspan="10" class="tdd">Pass</td>
+    </tr>
+    </table>
+    <button id="btnExport" class="btn btn-outline-warning mb-2"> Export </button>
+    </div>
+    
+    {% endif %}
+    </div>
+    </div>
+    <marquee direction="right" class="mt-5" style="color:#ffffff; font-family: 'Allura', cursive;"> <h1 class="text-warning"><i class="fas fa-graduation-cap"></i> Grading System </h1> </marquee>
+    <script src="{% static 'js/jquery.js'%}"></script>
+    <script src="{% static 'js/popper.js'%}"></script>
+    <script src="{% static 'js/bootstrap.js'%}"></script>
+    <script src="{% static 'js/fontawsome.js'%}"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+ 
+<script>
+        $(document).ready(function(){
+         $("#btnExport").click(function(){
+            html2canvas($('#tblCustomers')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("{{dict2.Roll_No}}.pdf");
+                }
+            });
+        });
+        });
+        
+    </script>
+</body>
+</html>

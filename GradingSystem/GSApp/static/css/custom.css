@@ -1,0 +1,23 @@
+.pimg{
+    border-radius:50%;
+}
+
+.fonth{
+    font-family: 'Dancing Script', cursive;
+}
+
+html,body{
+    height:100%;
+}
+.container-fluid{
+    min-height: 100%;
+}
+
+.thh{
+    /* color:#f97508 */
+    color:#190f07
+}
+.tdd{
+    color:#030501;
+    
+}
